@@ -18,7 +18,8 @@
 			<div class="collapse navbar-collapse" id="textoNavbar">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link" th:href="@{/}"> <i class="fa fa-home"></i> Home</a>
+						<a class="nav-link" href="/home"><i class="fa fa-home"></i> Home <span
+								class="sr-only">(Página atual)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" th:href="@{inserirAlunos}"><i class='fa fa-graduation-cap'></i> Cadastrar
@@ -42,14 +43,56 @@
 		</nav>
 	</header>
 
-	
+	<div class="container">
+		<h2>Alunos Adicionados</h2>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th class="text-center" scope="col">Nome</th>
+					<th class="text-center" scope="col">Cpf</th>
+					<th class="text-center" scope="col">Curso</th>
+					<th class="text-center" scope="col">Matricula</th>
+					<th class="text-center" scope="col">Status</th>
+					<th class="text-center" scope="col">Turno</th>
+					<th class="text-center" scope="col">Alterar</th>
+					<th class="text-center" scope="col">Excluir</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="aluno: ${alunos}">
+					<td class="text-center" th:text="${aluno.nome}"></td>
+					<td class="text-center" th:text="${aluno.cpf}"></td>
+					<td class="text-center" th:text="${aluno.curso}"></td>
+					<td class="text-center" th:text="${aluno.matricula}"></td>
+					<td class="text-center" th:text="${aluno.status}"></td>
+					<td class="text-center">
+						<span th:switch="${aluno.turno}">
+							<span th:case="'M'">Matutino</span>
+							<span th:case="'N'">Noturno</span>
+						</span>
+					</td>
+					<td class="text-center">
+						<a class="btn btn-secondary" th:href="@{alterar/{id}(id=${aluno.id})}">
+						<i class="fa fa-pencil-square"></i>
+					</a>
+					</td>
+					<td class="text-center">
+						<a class="btn btn-danger" th:href="@{excluir/{id}(id=${aluno.id})}">
+						<i class="fa fa-trash"></i>						
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
 
 	<footer class="bg-primary text-center text-lg-start"
 		style="position: fixed; bottom: 0; width: 100%; border-top: 3px solid white; padding: 30px 0; margin-top: 30px;">
 		<div class="container" style="color: #fff; font-weight: bold;">
 			© 2023 Copyright: SENAC
 		</div>
-		</footer>
+	</footer>
 
 </body>
 

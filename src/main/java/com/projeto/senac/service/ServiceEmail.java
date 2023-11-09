@@ -12,7 +12,9 @@ public class ServiceEmail {
 	@Autowired
 	private JavaMailSender javaMailSender;
 
+	@Autowired
 	private UsuarioRepository usuarioRepository;
+
 	public void sendEmail(String remetente, String email, String assunto, String corpo) {
 		SimpleMailMessage mensagem = new SimpleMailMessage();
 		mensagem.setFrom(remetente);
@@ -21,6 +23,5 @@ public class ServiceEmail {
 		mensagem.setSubject(assunto);
 		javaMailSender.send(mensagem);
 	}
-
 
 }

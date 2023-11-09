@@ -6,19 +6,18 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.projeto.senac.service.ServiceEmail;
-import com.projeto.senac.service.ServiceUsuario;
-import com.projeto.senac.util.Util;
 import com.projeto.senac.exceptions.ServiceExc;
 import com.projeto.senac.model.Usuario;
 import com.projeto.senac.repository.UsuarioRepository;
+import com.projeto.senac.service.ServiceEmail;
+import com.projeto.senac.service.ServiceUsuario;
+import com.projeto.senac.util.Util;
 
 @Controller
 public class UsuarioController {
@@ -82,72 +81,69 @@ public class UsuarioController {
 		return mv;
 
 	}
-	
+
 	@GetMapping("/atualizar")
 	public ModelAndView atualizar(Usuario user) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("usuario", user);
 		mv.setViewName("Login/atualizar");
 		return mv;
-}
-	
+	}
+
 	@PostMapping("/atualizarUsuario")
 	public ModelAndView atualizarUser(Usuario user) throws NoSuchAlgorithmException {
 		ModelAndView mv = new ModelAndView();
 		Usuario aux = usuarioRepository.findByEmail(user.getEmail());
-		if(aux==null || !user.getToken().equals(aux.getToken())) {
+		if (aux == null || !user.getToken().equals(aux.getToken())) {
 			mv.addObject("msg", "Token não encontrado!");
 			mv.addObject("usuario", user);
 			mv.setViewName("Login/atualizar");
-		}
-		else {
-			aux.setToken("");//garantir que o token não seja mais usado
+		} else {
+			aux.setToken("");// garantir que o token não seja mais usado
 			aux.setSenha(Util.md5(user.getSenha()));
 			usuarioRepository.save(aux);
 			mv.addObject("usuario", new Usuario());
 			mv.setViewName("Login/login");
-			
+
 		}
-		
+
 		return mv;
-}
+	}
+
 	@GetMapping("/recuperarSenha")
 	public ModelAndView recuperarSenha() {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("usuario", new Usuario());
 		mv.setViewName("Login/recuperar");
 		return mv;
-}
-	
+	}
+
 	@GetMapping("/atualizarSenha")
 	public ModelAndView DefinirSenha(Usuario user) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("usuario", user);
 		mv.setViewName("Login/atualizar");
 		return mv;
-}
-	
-	
+	}
+
 	@PostMapping("/recuperarSenha")
 	public ModelAndView recuperarSenha(Usuario user) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		Usuario aux = usuarioRepository.findByEmail(user.getEmail());
-		if(aux==null) {
+		if (aux == null) {
 			mv.addObject("msg", "Email Não encontrado!");
 			mv.setViewName("Login/recuperar");
-		}
-		else {
+		} else {
 			aux.setToken(Util.generateToken());
 			usuarioRepository.save(aux);
-			String corpo= "Use o seguinte token para redefinir a senha: "+aux.getToken();
+			String corpo = "Use o seguinte token para redefinir a senha: " + aux.getToken();
 			aux.setToken("");
 			mv.addObject("usuario", aux);
 			serviceEmail.sendEmail("senaclpoo@gmail.com", aux.getEmail(), "Recuperação de Senha", corpo);
 			mv.setViewName("Login/atualizar");
-			//return DefinirSenha(aux);
+			// return DefinirSenha(aux);
 		}
 		return mv;
-}
-
+	}
 
 }
