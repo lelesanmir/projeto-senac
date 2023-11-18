@@ -9,7 +9,7 @@
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-	<title>Listar Alunos</title>
+	<title>Editar Professores</title>
 </head>
 
 <body>
@@ -18,18 +18,28 @@
 			<div class="collapse navbar-collapse" id="textoNavbar">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active">
-						<a class="nav-link" href="/home"><i class="fa fa-home"></i> Home <span
-						class="sr-only">(Página atual)</span></a>
-					</li>
+						<a class="nav-link" th:href="@{home}"><i class="fa fa-home"></i> Home <span
+								class="sr-only">(Página atual)</span></a>
+					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toogle" id="navdardrop" data-toggle="dropdown">
 							<i class="fa fa-user"></i>Aluno</a>
+						<div class="nav-item dropdown-menu">
+							<a class="dropdown-item" th:href="@{inserirAluno}"><i class="fa fa-graduation-cap">Cadastrar
+									Aluno</i></a>
+							<a class="dropdown-item" th:href="@{listarExcluirAlunos}"><i class="fa fa-trash">Excluir
+									Aluno</i></a>
+							<a class="dropdown-item" href="/listarAlunos"><i class="fa fa-search">Listar Alunos</i></a>
+						</div>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toogle" id="navdardrop" data-toggle="dropdown">
+							<i class="fa fa-user"></i>Professor</a>
 							<div class="nav-item dropdown-menu">
-								<a class="dropdown-item" th:href="@{inserirAluno}"><i class="fa fa-graduation-cap">Cadastrar Aluno</i></a>
-								<a class="dropdown-item" th:href="@{listarExcluirAlunos}"><i class="fa fa-trash">Excluir Aluno</i></a>
-								<a class="dropdown-item" th:href="@{listarAlterarAlunos}"><i class="fa fa-pencil-square">Editar Aluno</i></a>
+								<a class="dropdown-item" th:href="@{inserirProfessor}"><i class="fa fa-graduation-cap">Cadastrar Professor</i></a>
+								<a class="dropdown-item" th:href="@{listarExluirProfessores}"><i class="fa fa-trash">Excluir Professor</i></a>
+								<a class="dropdown-item" th:href="@{listarProfessores}"><i class="fa fa-search">Listar Professores</i></a>
 							</div>
 					</li>
-
+					</li>
 				</ul>
 				<span class="navbar-text">
 					<div class="collapse navbar-collapse" id="textoNavbar">
@@ -45,30 +55,25 @@
 	</header>
 
 	<div class="container">
-		<h2>Alunos Adicionados</h2>
+		<h2>Professores Adicionados</h2>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th class="text-center" scope="col">Nome</th>
 					<th class="text-center" scope="col">Cpf</th>
-					<th class="text-center" scope="col">Curso</th>
-					<th class="text-center" scope="col">Matricula</th>
-					<th class="text-center" scope="col">Status</th>
-					<th class="text-center" scope="col">Turno</th>
+					<th class="text-center" scope="col">Titulação</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr scope="row" th:each="aluno: ${alunos}">
-					<td class="text-center" th:text="${aluno.nome}"></td>
-					<td class="text-center" th:text="${aluno.cpf}"></td>
-					<td class="text-center" th:text="${aluno.curso}"></td>
-					<td class="text-center" th:text="${aluno.matricula}"></td>
-					<td class="text-center" th:text="${aluno.status}"></td>
+				<tr th:each="professor: ${professores}">
+					<td class="text-center" th:text="${professor.nome}"></td>
+					<td class="text-center" th:text="${professor.cpf}"></td>
+					<td class="text-center" th:text="${professor.titulacao}"></td>
+
 					<td class="text-center">
-						<span th:switch="${aluno.turno}">
-							<span th:case="'M'">Matutino</span>
-							<span th:case="'N'">Noturno</span>
-						</span>
+						<a class="btn btn-secondary" th:href="@{alterarProfessor/{id}(id=${professor.id})}">
+							<i class="fa fa-pencil-square"></i>
+						</a>
 					</td>
 				</tr>
 			</tbody>

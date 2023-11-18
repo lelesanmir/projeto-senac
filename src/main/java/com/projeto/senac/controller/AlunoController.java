@@ -71,7 +71,29 @@ public class AlunoController {
 	} else {
 		mv.setViewName("redirect:/listarAlunos");
 	}
-	return mv;
-			
+	return mv;		
+	}
+	
+	@GetMapping("/excluir/{id}")
+	public String excluir (@PathVariable("id") Long id) {
+		
+		alunoRepository.deleteById(id);
+		return "redirect:/listarAlunos";
+	}
+	
+	@GetMapping("/listarAlterarAlunos")
+	public ModelAndView listarAlterarAlunos() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("alunos", alunoRepository.findAllOrderedById());
+		mv.setViewName("Aluno/listarAlterar");
+		return mv;
+	}
+	
+	@GetMapping("/listarExcluirAlunos")
+	public ModelAndView listarExcluirAlunos() {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("alunos", alunoRepository.findAllOrderedById());
+		mv.setViewName("Aluno/listarExcluir");
+		return mv;
 	}
 }
