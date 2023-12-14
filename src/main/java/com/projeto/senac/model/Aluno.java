@@ -1,6 +1,7 @@
 package com.projeto.senac.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.projeto.senac.Enum.Curso;
@@ -30,6 +32,18 @@ public class Aluno implements Serializable {
 	private Status status;
 	private String turno;
 	private String matricula;
+
+	@ManyToMany(mappedBy = "alunos")//significa que esse atributo esta sendo mapeado lá em turmas, mapear igual esta senfo referenciado lá
+	private List<Turma> turmas;// tem que falar para o aluno depois de criar os relacionamentos.
+	
+	
+	public List<Turma> getTurmas() {
+		return turmas;
+	}
+
+	public void setTurmas(List<Turma> turmas) {
+		this.turmas = turmas;
+	}
 
 	public String getCpf() {
 		return cpf;
